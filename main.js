@@ -4,302 +4,196 @@ const ctx = canvas.getContext("2d");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-// First image
-// 1. Background = Rectangle
-// 1.1 Define the beginning of the outline
+// 1. Primer imagen 
+
+// 1.1 Analisis de la imagen
+// 1.1.1 Fondo negro (#161616), con 1 línea y cuadrilateros de diversos tamaños de color #ececec, con "salpicaduras" de negro.
+
+// 1.2 Fondo
+// 1.2.1 Rectangulo - Definir el inicio del trazo
 ctx.beginPath();
 
-// 1.2 Define the styles
+// 1.2.2 Definir los estilos
 ctx.fillStyle = '#161616';
 
-// 1.3 Specify the shape
-// ctx.rect(x, y, width, height);
-ctx.rect(0, 0, 300, 450);
+// 1.2.3 Especificar la figura
+// ctx.rect(x,y,width,lenght);
+ctx.rect(0, 0, 500, 500); 
 
-// 1.4 Draw the filling or outline
+// 1.2.4 Dibujar relleno o contorno
 ctx.fill();
 
-// 2. Circles
-// ctx.ellipse(x,y,radiusX,radiusY,rotation,startAngle,endAngle);
-
-// 2.1 Define the function to make the circles
-function dibujarCirculo(x, y, radius) {
+// 1.3 Línea 
+// 1.3.1 Definir la función para hacer la línea
+function dibujarLineaSola(y) {
+    // 1.3.1.1 Definir inicio del trazo
     ctx.beginPath();
 
-    ctx.ellipse(x, y, radius, radius, 0, 0, 2 * Math.PI); 
+    // 1.3.1.2 Definir los estilos
+    ctx.strokeStyle = '#ECECEC';
+    ctx.lineWidth = 3;
+
+    // 1.3.1.3 Especificamos la figura 
+    ctx.moveTo (30, y);
+    ctx.lineTo (30, y + 420);
+
+    // 1.3.1.4 Dibujar el relleno o contorno
+    ctx.stroke();
+}
+
+//1.3.2 Dibujar la línea
+dibujarLineaSola(40);
+
+// 1.4 Cuadrilateros inclinados 
+// 1.4.1 Definir la función para hacer los cuadrilateros
+// 1.4.1.1 Primer cuadrilatero
+function dibujarCuadrilatero(x, y, width, height, inclinacion) {
+    ctx.beginPath ();
+    ctx.strokeStyle = '#161616';
+
+    ctx.moveTo(x, 100);
+    ctx.lineTo(x + width, y - inclinacion);
+    ctx.lineTo(x + width, y + height);
+    ctx.lineTo(x, 400);
+    ctx.closePath();
+
+    ctx.fillStyle = "#ECECEC";
+    ctx.lineWidth = 5;
+    ctx.fill();
+    ctx.stroke();
+}
+
+// 1.4.2 Dibujar los multiples cuadriláteros con un patrón
+let inicioX = 50;
+let ancho = 25;
+let alto = 400;
+let inclinacion = 30;
+let espacio = 15;
+
+for (let i = 0; i < 6; i++) {
+    dibujarCuadrilatero(inicioX, 65, ancho, alto, inclinacion);
+    inicioX += ancho + espacio; // Avanza la siguiente figura
+    
+    ancho += 15;
+    espacio -= 2.5
+}
+
+
+
+// 2. Segunda imagen
+// 2.1 Analisis de la imagen
+// 2.1.1 Mitad fondo negro (#161616) y mitad fondo blanco (#f3f0ee), dos circulos grandes de 180º (a.k.a medios circulos), y desde el centro son 20 circulos (pura línea) que van aumentando su tamaño (del centro para afuera), misma idea de colores invertidos.
+
+// 2.2 Fondo (primera mitad)
+// 2.2.1 Rectangulo - Definir el inicio del trazo
+ctx.beginPath();
+
+// 2.2.2 Definir los estilos
+ctx.fillStyle = '#161616';
+
+// 2.2.3 Especificar la figura
+// ctx.rect(x,y,width,lenght);
+ctx.rect(600, 0, 400, 250); 
+
+// 2.2.4 Dibujar relleno o contorno
+ctx.fill();
+
+// 2.3 Circulo grande
+// 2.3.1 Definir Inicio del trazo
+ctx.beginPath();
+
+// 2.3.2 Definir los estilos
+ctx.strokeStyle = '#F3F0EE';
+ctx.fillStyle = '#F3F0EE';
+
+// 2.3.3 Especificar la figura.
+// ctx.ellipse(x,y,radiusX,radiusY,rotation,startAngle,endAngle);
+ctx.ellipse(800, 250, 135, 135, 0, Math.PI, Math.PI*2);
+
+// 2.3.4 Dibujar relleno o contorno
+ctx.stroke();
+ctx.fill();
+
+// 2.4. Circulos chicos (pt1)
+// 2.4.1 Definir la función para los circulos
+function dibujarCirculosNegros(x, y, radius, startAngle, endAngle) {
+    // 2.4.1.1 Definir el inicio del trazo
+    ctx.beginPath();
+    
+    // 2.4.1.2 Definir los estilos
+    ctx.arc(x, y, radius, startAngle, endAngle);
+    ctx.strokeStyle = '#161616';
+    ctx.lineWidth = 2;
+
+    // 2.4.1.3 Dibujar el circulo
+    ctx.stroke();
+}
+
+// 2.4.2 Dibujar los multiples circulos con un patrón
+let centroX = 800;
+let centroY = 250;
+let radioInicial = 2.5;
+
+
+for (let j = 0; j < 20; j++) {
+    dibujarCirculosNegros(centroX, centroY, radioInicial, Math.PI, Math.PI*2);
+    
+    radioInicial += 4;
+}
+
+// 2.5 Fondo (segunda mitad)
+// 2.5.1 Rectangulo - Definir el inicio del trazo
+ctx.beginPath();
+
+// 2.5.2 Definir los estilos
+ctx.fillStyle = '#F3F0EE';
+
+// 2.5.3 Especificar la figura
+// ctx.rect(x,y,width,lenght);
+ctx.rect(600, 250, 400, 250); 
+
+// 2.5.4 Dibujar relleno o contorno
+ctx.fill();
+
+// 2.6 Circulo grande
+// 2.6.1 Definir Inicio del trazo
+ctx.beginPath();
+
+// 2.6.2 Definir los estilos
+ctx.strokeStyle = '#161616';
+ctx.fillStyle = '#161616';
+
+// 2.6.3 Especificar la figura.
+// ctx.ellipse(x,y,radiusX,radiusY,rotation,startAngle,endAngle);
+ctx.ellipse(800, 250, 135, 135, 0, 0, Math.PI);
+
+// 2.6.4 Dibujar relleno o contorno
+ctx.stroke();
+ctx.fill();
+
+// 2.7. Circulos chicos (pt1)
+// 2.7.1 Definir la función para los circulos
+function dibujarCirculosBlancos(x, y, radius, startAngle, endAngle) {
+    // 2.4.1.1 Definir el inicio del trazo
+    ctx.beginPath();
+    
+    // 2.4.1.2 Definir los estilos
+    ctx.arc(x, y, radius, startAngle, endAngle);
     ctx.strokeStyle = '#F3F0EE';
     ctx.lineWidth = 2;
 
-    ctx.stroke();
-    ctx.closePath();
-}
-
-// 2.2 Draw multiple circles
-let centreX = 150; 
-let centreY = 145; 
-let radioInicial = 90;
-let distanciaEntreCirculos = 16; 
-
-for (let k = 0; k < 11; k++) {
-    dibujarCirculo(centreX, centreY, radioInicial);
-
-    centreY += distanciaEntreCirculos; 
-}
-
-
-// Second image 
-// 3. Background = Rectangle
-// 3.1 Define the beginning of the outline
-ctx.beginPath();
-
-// 3.2 Define the styles
-ctx.fillStyle = '#EEEAE8';
-
-// 3.3 Specify the shape
-// ctx.rect(x, y, width, height);
-ctx.rect(320, 0, 310, 365);
-
-// 3.4 Draw the filling or outline
-ctx.fill();
-
-// 4. Half circles (top part)
-// 4.1 Define the beginning of the outline
-function dibujarCirculosNegros(x, y, radius) {
-    ctx.beginPath();
-
-    ctx.ellipse(x, y, radius, radius, 1.57, Math.PI, 2 * Math.PI); 
-    ctx.fillStyle = '#19171C';
-
-    ctx.fill();
-    //ctx.closePath();
-}
-
-// 4.2 Draw multiple circles
-let centroX = 330; 
-let centroY = 65; 
-let radiusInicial = 58;
-let distanceEntreCirculos = 58; 
-
-for (let k = 0; k < 5; k++) {
-    dibujarCirculosNegros(centroX, centroY, radiusInicial);
-
-    centroX += distanceEntreCirculos; 
-}
-
-// 5. Half circles (middle part)
-// 5.1 Define the beginning of the outline
-function dibujarCirculosNegrus(x, y, radius) {
-    ctx.beginPath();
-
-    ctx.ellipse(x, y, radius, radius, 4.71, Math.PI, 2 * Math.PI); 
-    ctx.fillStyle = '#19171C';
-
-    ctx.fill();
-    //ctx.closePath();
-}
-
-// 5.2 Draw multiple circles
-let centriX = 388; 
-let centriY = 181; 
-let radisInicial = 58;
-let distanceEntreCircus = 58; 
-
-for (let k = 0; k < 5; k++) {
-    dibujarCirculosNegrus(centriX, centriY, radisInicial);
-
-    centriX += distanceEntreCircus; 
-}
-
-// 6. Half circles (top part)
-// 6.1 Define the beginning of the outline
-function dibujarCirculosNegros(x, y, radius) {
-    ctx.beginPath();
-
-    ctx.ellipse(x, y, radius, radius, 1.57, Math.PI, 2 * Math.PI); 
-    ctx.fillStyle = '#19171C';
-
-    ctx.fill();
-    //ctx.closePath();
-}
-
-// 6.2 Draw multiple circles
-let centraX = 331; 
-let centraY = 297; 
-let radiousInicial = 58;
-let distnceEntreCirculos = 58; 
-
-for (let k = 0; k < 5; k++) {
-    dibujarCirculosNegros(centraX, centraY, radiousInicial);
-
-    centraX += distnceEntreCirculos; 
-}
-
-
-// third image 
-// 7. Background = Rectangle
-// 7.1 Define the beginning of the outline
-ctx.beginPath();
-
-// 7.2 Define the styles
-ctx.fillStyle = '#EBE7E1';
-
-// 7.3 Specify the shape
-// ctx.rect(x, y, width, height);
-ctx.rect(640, 0, 300, 400);
-
-// 7.4 Draw the filling or outline
-ctx.fill();
-
-// 8. Orange Circle
-// 8.1 Define the beginning of the outline
-ctx.beginPath();
-
-// 8.2 Define the styles
-ctx.fillStyle = '#E5965D';
-
-// 8.3 Specify the shape
-//ctx.ellipse(x, y, radiusX, radiusY, rotation, startingAngle, endingAngle);
-ctx.ellipse(785, 225, 100, 100, 0, 0, Math.PI*2);
-
-// 8.4 Draw the filling or outline
-ctx.fill();
-
-// 9. Lines
-// 9.1 Define the function for the lines
-function dibujarLineasLargas(x){
-    // 9.1.1 Define the beginning of the outline
-    ctx.beginPath();
-
-    // 9.1.2 Define the styles 
-    ctx.strokeStyle = 'black';
-    ctx.lineWidth = 2;
-
-    // 9.1.3 Specify the shape
-    ctx.moveTo(x, 15);
-    ctx.lineTo(x, 370);
-
-    // 9.1.4 Draw the filling or outline
+    // 2.4.1.3 Dibujar el circulo
     ctx.stroke();
 }
 
-// 9.2 Draw the line
-dibujarLineasLargas(745);
-dibujarLineasLargas(755);
-dibujarLineasLargas(765);
-dibujarLineasLargas(775);
-dibujarLineasLargas(785);
-dibujarLineasLargas(795);
-dibujarLineasLargas(805);
-dibujarLineasLargas(815);
-dibujarLineasLargas(825);
-
-// 10. Black Circle
-// 10.1 Define the beginning of the outline
-ctx.beginPath();
-
-// 10.2 Define the styles
-ctx.fillStyle = '#000000';
-
-// 10.3 Specify the shape
-//ctx.ellipse(x, y, radiusX, radiusY, rotation, startingAngle, endingAngle);
-ctx.ellipse(765, 145, 65, 65, 0, 0, Math.PI*2);
-
-// 10.4 Draw the filling or outline
-ctx.fill();
+// 2.7.2 Dibujar los multiples circulos con un patrón
+let centreX = 800;
+let centreY = 250;
+let radiusInicial = 2.5;
 
 
-// Fourth image
-// 11. Background = Rectangle
-// 11.1 Define the beginning of the outline
-ctx.beginPath();
-
-// 11.2 Define the styles
-ctx.fillStyle = '#E2E2D9';
-
-// 11.3 Specify the shape
-// ctx.rect(x, y, width, height);
-ctx.rect(960, 0, 300, 400);
-
-// 11.4 Draw the filling or outline
-ctx.fill();
-
-// 12. Background circle
-// 12.1 Define the beginning of t he outline
-ctx.beginPath();
-
-// 12.2 Define the styles
-ctx.fillStyle = '#D85342';
-
-// 12.3 Specify the shape
-//ctx.ellipse(x, y, radiusX, radiusY, rotation, startingAngle, endingAngle);
-ctx.ellipse(1110, 100, 80, 80, 0, 0, Math.PI*2);
-
-// 12.4 Draw the filling or outline
-ctx.fill();
-
-// 13. Black arcs
-// 13.1 Definir la función para los circulos
-function dibujarCirculosNegros(x, y, radius, startAngle, endAngle) {
-    // 13.1.1 Define the beginning of the outline
-    ctx.beginPath();
+for (let k = 0; k < 20; k++) {
+    dibujarCirculosBlancos(centreX, centreY, radiusInicial, 0, Math.PI);
     
-    // 13.1.2 Define the styles
-    ctx.arc(x, y, radius, startAngle, endAngle);
-    ctx.strokeStyle = '#161616';
-    ctx.lineWidth = 6;
-
-    // 13.1.3 Draw the filling or outline
-    ctx.stroke();
+    radiusInicial += 4;
 }
-
-// 13.2 Dibujar los multiples circulos con un patrón
-let centruX = 1110;
-let centruY = 198;
-let radieInicial = 8;
-let separacion = 10;
-
-
-for (let j = 0; j < 9; j++) {
-    dibujarCirculosNegros(centruX, centruY, radieInicial, Math.PI, Math.PI*2);
-
-    radieInicial += separacion;
-}
-
-// 14. Lines (right side)
-// 14.1 Define the function for the lines
-function dibujarLineasDerecha(x){
-    // 9.1.1 Define the beginning of the outline
-    ctx.beginPath();
-
-    // 9.1.2 Define the styles 
-    ctx.strokeStyle = '#161616';
-    ctx.lineWidth = 6;
-
-    // 9.1.3 Specify the shape
-    ctx.moveTo(x, 198);
-    ctx.lineTo(x, 390);
-
-    // 9.1.4 Draw the filling or outline
-    ctx.stroke();
-}
-
-// 9.2 Draw the line
-dibujarLineasDerecha(1022);
-dibujarLineasDerecha(1032);
-dibujarLineasDerecha(1042);
-dibujarLineasDerecha(1052);
-dibujarLineasDerecha(1062);
-dibujarLineasDerecha(1072);
-dibujarLineasDerecha(1082);
-dibujarLineasDerecha(1092);
-dibujarLineasDerecha(1102);
-
-dibujarLineasDerecha(1118);
-dibujarLineasDerecha(1128);
-dibujarLineasDerecha(1138);
-dibujarLineasDerecha(1148);
-dibujarLineasDerecha(1158);
-dibujarLineasDerecha(1168);
-dibujarLineasDerecha(1178);
-dibujarLineasDerecha(1188);
-dibujarLineasDerecha(1198);
